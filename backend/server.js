@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
-
+const studentRoutes = require("./routes/studentRoutes");
 const app = express();
 const PORT = 5000;
 
@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 
 // User Routes
 app.use("/api/users", userRoutes);
+app.use("api/students",studentRoutes);
 
 // Start Server
 app.listen(PORT, () => {
