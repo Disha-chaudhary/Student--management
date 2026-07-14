@@ -98,6 +98,72 @@ const deleteStudent = async (req, res) => {
 
     }
 };
+
+const getStudentById = async (req,res)=>{
+    try{
+    const id = req.params.id;
+
+   const found = await Student.findById(id);
+   if(!found){
+    return res.status(404).json({
+        success:false,
+        message:"student not found!!",
+    }) ;
+}
+    res.status(200).json({
+        success:true,
+        message:"student is found",
+        student: found,
+    })
+   
+}
+catch(error){
+    console.log(error);
+    return res.status(500).json({
+        success:false,
+        message:"Internal server error",
+    });
+}
+
+}
+
+const updateStudent = async (req,res)=>{
+    try{
+    const id = req.params.id;
+    const {name,rollNumber, department,year,phone} = req.body;
+    const existingStudent = await Student.findById(id);
+
+    if(!existingStudent){
+        return res.status(404).json({
+            success:false,
+            message:"Student not found",
+        });
+    }
+    const updatedStudent = await Student.findByIdAndUpdate(
+        id,
+        {
+            name,
+            rollNumber,
+            department,
+            year,
+            phone,
+        },
+        {
+            new: true,
+        }
+    );
+    res.status(200).json({
+        success:true,
+        message:"Student updated successfully",
+    });
+}catch(error){
+    console.log(error);
+    return res.status(500).json({
+        success:false,
+        message:"Internal server error",
+    });
+}
+}
 module.exports={
-    addStudent,
+    addStudent,getAllStudents,getStudentById,updatedStudent,deleteStudent,
 }
